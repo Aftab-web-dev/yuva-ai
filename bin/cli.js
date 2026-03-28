@@ -2,16 +2,29 @@
 
 // Parse flags
 const args = process.argv.slice(2);
+// Extract --type <value> before general flag parsing
+let typeFlag = null;
+const argsWithoutType = [];
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--type' && i + 1 < args.length) {
+    typeFlag = args[i + 1];
+    i++; // skip value
+  } else {
+    argsWithoutType.push(args[i]);
+  }
+}
+
 const flags = {
-  force: args.includes('--force'),
-  dryRun: args.includes('--dry-run'),
-  verbose: args.includes('--verbose'),
-  all: args.includes('--all'),
-  version: args.includes('--version') || args.includes('-v'),
+  force: argsWithoutType.includes('--force'),
+  dryRun: argsWithoutType.includes('--dry-run'),
+  verbose: argsWithoutType.includes('--verbose'),
+  all: argsWithoutType.includes('--all'),
+  version: argsWithoutType.includes('--version') || argsWithoutType.includes('-v'),
+  type: typeFlag,
 };
 
 // Remove flags from args
-const commands = args.filter(a => !a.startsWith('--') && !a.startsWith('-v'));
+const commands = argsWithoutType.filter(a => !a.startsWith('--') && !a.startsWith('-v'));
 const command = commands[0];
 const subArgs = commands.slice(1);
 
@@ -71,6 +84,13 @@ function showHelp() {
   log('  status            Show project status');
   log('  telemetry         Manage usage analytics');
   log('  analytics         View analytics dashboard\n');
+
+  log('Session:', 'bright');
+  log('  session start     Start a new development session');
+  log('  session log       Log a work entry');
+  log('  session resume    Resume with full context');
+  log('  session save      Save checkpoint');
+  log('  session end       End current session\n');
 
   log('Options:', 'bright');
   log('  --force           Overwrite existing files');
@@ -156,6 +176,11 @@ switch (command) {
   case 'analytics': {
     const analyticsCommand = require('../lib/commands/analytics');
     analyticsCommand();
+    break;
+  }
+  case 'session': {
+    const sessionCommand = require('../lib/commands/session');
+    sessionCommand.run(subArgs, flags);
     break;
   }
   case 'help':
