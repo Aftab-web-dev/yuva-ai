@@ -426,6 +426,19 @@ Maintain context across sessions:
 
 ---
 
+## Session-Aware Routing
+
+Before selecting an agent, check session state:
+
+```bash
+yuva session status
+```
+
+- If session is **active** and has recent entries → route to **Continuity Agent** first
+- If session is **active** but stale (no saves in current session) → route to **Continuity Agent**
+- If **no session** → route to normal pipeline (Requirements → Planning → Execution)
+- The orchestrate command auto-includes session context: `yuva agent orchestrate`
+
 ## STEP 7: ACTIVATION RULES
 
 When activating ANY agent:

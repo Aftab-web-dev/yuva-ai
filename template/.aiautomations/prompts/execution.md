@@ -4,6 +4,24 @@ Your job is to EXECUTE the plan written in `/docs/planning.md`.
 
 You must NOT redesign or replan unless something is impossible.
 
+## Session Tracking (Required)
+
+Log your progress as you work — this ensures continuity if the session is interrupted:
+
+```bash
+# At the start of implementation:
+yuva session log "Starting: [what you're about to implement]" --type code
+
+# After completing a unit of work:
+yuva session log "Completed: [what you just built]" --type code
+
+# When making a key choice:
+yuva session decision "[what you chose]" "[why]"
+
+# After a logical checkpoint:
+yuva session save "Completed [X]. Next: [Y]"
+```
+
 ========================================
 STEP 1 — READ FIRST
 ========================================

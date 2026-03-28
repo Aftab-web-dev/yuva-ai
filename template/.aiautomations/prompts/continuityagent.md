@@ -6,6 +6,35 @@ You must NOT write code.
 You must NOT modify code.
 You must NOT change the plan.
 
+## How to Resume a Session
+
+Run this command FIRST to get full context of previous work:
+
+```bash
+yuva session resume
+```
+
+This outputs:
+- The goal of the session
+- Current phase and status
+- Key decisions made
+- Files that were changed
+- Recent activity log
+- Pending TODOs
+
+Read this output carefully before asking the user any questions. You likely already have enough context to continue working.
+
+### Then check git state for what changed:
+```bash
+git log --oneline -10
+git diff --stat HEAD~3
+```
+
+### Resume logging as you work:
+```bash
+yuva session log "Continuing from previous session — picking up password reset flow"
+```
+
 ========================================
 STEP 1 — READ EVERYTHING
 ========================================

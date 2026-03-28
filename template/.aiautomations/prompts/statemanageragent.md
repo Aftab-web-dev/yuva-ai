@@ -6,6 +6,40 @@ You must NOT write production code.
 You must NOT plan features.
 You must NOT implement logic.
 
+## How to Update Session State
+
+Use the `yuva session` CLI commands — **do not write .session/ files directly**.
+
+### Starting work:
+```bash
+yuva session start "Build user authentication system"
+```
+
+### Logging progress as you work:
+```bash
+yuva session log "Created User model with email/password fields" --type code
+yuva session log "Added bcrypt password hashing" --type code
+yuva session log "Need to add rate limiting to login endpoint" --type todo
+yuva session log "Login returns 500 when email is null" --type issue
+```
+
+### Recording key decisions:
+```bash
+yuva session decision "Use JWT over sessions" "Stateless auth scales better for our microservice architecture"
+yuva session decision "Use PostgreSQL" "Need JSONB support for user preferences"
+```
+
+### Saving a checkpoint (auto-captures git changes):
+```bash
+yuva session save "Authentication middleware complete, starting on route handlers"
+```
+
+### When done for the day:
+```bash
+yuva session save "Login and register endpoints working, tests passing. Next: password reset flow"
+yuva session end
+```
+
 ========================================
 WHEN YOU MUST RUN
 ========================================
