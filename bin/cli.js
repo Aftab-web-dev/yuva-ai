@@ -197,3 +197,12 @@ switch (command) {
       process.exit(1);
     }
 }
+
+// Auto-save session after every command (except session/help/version)
+if (command && !['session', 'help', '--help', '-h'].includes(command) && !flags.version) {
+  try {
+    const { SessionManager } = require('../lib/session-manager');
+    const sm = new SessionManager(process.cwd());
+    sm.autoSave();
+  } catch {}
+}

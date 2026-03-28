@@ -291,4 +291,36 @@ describe('SessionManager', () => {
       expect(session.goal).toBe('Get test');
     });
   });
+
+  describe('autoSave()', () => {
+    it('should update lastSavedAt and write all files', () => {
+      sm.start({ goal: 'Auto-save test' });
+      sm.log('Did something');
+
+      const before = sm.getSession();
+      expect(before.lastSavedAt).toBeNull();
+
+      sm.autoSave();
+
+      const after = sm.getSession();
+      expect(after.lastSavedAt).toBeTruthy();
+      expect(fs.existsSync(path.join(tmpDir, '.session', 'state.md'))).toBe(true);
+      expect(fs.existsSync(path.join(tmpDir, '.session', 'context.md'))).toBe(true);
+    });
+
+    it('should do nothing when no session exists', () => {
+      expect(() => sm.autoSave()).not.toThrow();
+    });
+
+    it('should do nothing when session is completed', () => {
+      sm.start({ goal: 'Test' });
+      sm.end();
+
+      const endedAt = sm.getSession().endedAt;
+      sm.autoSave();
+
+      // Should not have changed anything
+      expect(sm.getSession().endedAt).toBe(endedAt);
+    });
+  });
 });
