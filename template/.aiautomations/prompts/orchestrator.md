@@ -439,6 +439,10 @@ yuva session status
 - If **no session** → route to normal pipeline (Requirements → Planning → Execution)
 - The orchestrate command auto-includes session context: `yuva agent orchestrate`
 
+### Auto-Save
+
+Sessions auto-save after every `yuva` command. You do NOT need to manually run `yuva session save` — git state, changed files, and session metadata are captured automatically whenever any yuva command runs. Just start a session with `yuva session start "goal"` and everything is tracked from that point on.
+
 ## STEP 7: ACTIVATION RULES
 
 When activating ANY agent:

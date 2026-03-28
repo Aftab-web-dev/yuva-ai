@@ -97,6 +97,13 @@ yuva llm generate          # Generate configs for all LLMs
 yuva config                # Show current config
 yuva config set <k> <v>    # Set a config value
 
+# Session Persistence (auto-saves)
+yuva session start "goal"  # Start tracking a session
+yuva session log "message" # Log progress
+yuva session resume        # Get full context (for AI or you)
+yuva session status        # Show session state
+yuva session end           # End current session
+
 # Analytics
 yuva status                # Show project status
 yuva help                  # Show full help
@@ -173,6 +180,34 @@ your-project/
 ```
 
 Agent prompts are served on demand from the installed package — **no file bloat**.
+
+## Session Persistence
+
+Never lose context between terminal sessions. Sessions **auto-save** after every yuva command — no manual save needed.
+
+```bash
+# Day 1 — Start working
+yuva session start "Build user auth with JWT"
+# ... work normally, run any yuva commands ...
+# Session auto-saves git state, changed files, and context after each command
+
+# Day 2 — Come back, new terminal
+yuva session resume        # Full context: goal, decisions, files changed, activity log
+# AI picks up exactly where you left off
+
+# Log important progress
+yuva session log "Added login endpoint" --type code
+yuva session decision "Use bcrypt" "Industry standard for password hashing"
+
+# When done
+yuva session end
+```
+
+Session files are stored in `.session/` (auto-gitignored) and include:
+- `session.json` — structured state for tools
+- `context.md` — human/AI-readable context summary
+- `log.md` — timestamped activity log
+- `state.md` — current status overview
 
 ## Custom Agents
 
