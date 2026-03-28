@@ -1,0 +1,75 @@
+{
+  "name": "yuva-ai",
+  "version": "1.0.0",
+  "description": "Yuva AI - Development agent framework with 12 agents, 20 LLM platforms, on-demand prompts, and auto-detection",
+  "main": "index.js",
+  "bin": {
+    "yuva-ai": "bin/cli.js",
+    "yuva": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "doctor": "node bin/cli.js doctor",
+    "postinstall": "node bin/postinstall.js"
+  },
+  "keywords": [
+    "yuva",
+    "yuva-ai",
+    "ai",
+    "automation",
+    "multi-agent",
+    "agents",
+    "framework",
+    "development",
+    "code-quality",
+    "on-demand-prompts",
+    "auto-detection",
+    "antigravity",
+    "ollama",
+    "gpt",
+    "gemini",
+    "copilot",
+    "claude",
+    "cursor",
+    "windsurf",
+    "opencode",
+    "codex",
+    "aider",
+    "kilo-code",
+    "multi-llm",
+    "open-source",
+    "workflow",
+    "plugin-system",
+    "analytics"
+  ],
+  "author": "aftabshaikh4643",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aftab-web-dev/yuva-ai.git"
+  },
+  "homepage": "https://github.com/Aftab-web-dev/yuva-ai#readme",
+  "bugs": {
+    "url": "https://github.com/Aftab-web-dev/yuva-ai/issues"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "template/",
+    "docs/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.39.4",
+    "vitest": "^3.2.4"
+  }
+}
