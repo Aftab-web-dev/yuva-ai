@@ -51,7 +51,7 @@ Is this about CODE or SOFTWARE?
   │
   ├─ YES ────────────────────────────────────────┐
   │                                               │
-  │   Check .session/ files                       │
+  │   Run: yuva session status                     │
   │   Check /docs/planning.md                     │
   │   Route to DEVELOPMENT AGENT                  │
   │   (Use development routing logic)             │
@@ -94,10 +94,10 @@ SCAN PROJECT FOR CODE FILES
 ### PHASE 2: PLANNING — Route by Intent
 
 ```
-Does .session/ exist with progress?
+Run `yuva session status` — is there an active session?
   │
   ├─ YES ──► CONTINUITY AGENT (continuityagent.md)
-  │          Reconstruct context from session files
+  │          Run `yuva session resume` for full context
   │          Then route to appropriate agent below
   │
   └─ NO ──► Does /docs/planning.md exist?
@@ -170,21 +170,21 @@ The appropriate agent writes code. During code execution, the agent MUST follow:
 CODE WRITTEN
   │
   ▼
-  ┌─ Agent writes "Code Written" section to .session/context.md
-  ├─ STATE MANAGER updates session (state.md, log.md, next.md)
-  │  ↑ SESSION IS SAVED — even if conversation breaks here, code is recorded
+  ┌─ Run: yuva session log "Code written: [description]" --type code
+  ├─ Run: yuva session save "Completed [feature]. Next: testing"
+  │  ↑ SESSION AUTO-SAVES — even if conversation breaks here, progress is recorded
   ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ STEP 1: TESTER AGENT (testeragent.md)                       │
-│ • READS: context.md → "Code Written" section                │
+│ • Run: yuva session resume (get context from previous work) │
 │ • Run/create tests for the new code                         │
 │ • Verify 70%+ code coverage (90%+ for critical paths)       │
 │ • Follow: testingstandards.md                               │
-│ • WRITES: context.md → "Test Results" section               │
-│ • STATE MANAGER updates session immediately                 │
+│ • Run: yuva session log "Tests: [result]" --type code       │
+│ • Session auto-saves after any yuva command                 │
 │                                                             │
-│ Tests FAIL? ──► DEBUGGER reads "Test Results" ──► fixes     │
-│                 ──► STATE MANAGER updates session            │
+│ Tests FAIL? ──► DEBUGGER reads session context ──► fixes    │
+│                 ──► session auto-saves                       │
 │                 ──► re-run TESTER                            │
 │ Tests PASS? ──► proceed to STEP 2                           │
 └─────────────────────────────────────────────────────────────┘
@@ -192,22 +192,22 @@ CODE WRITTEN
   ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ STEP 2: SECURITY AGENT (securityagent.md)                   │
-│ • READS: context.md → "Code Written" + "Test Results"       │
+│ • Run: yuva session resume (get full context)               │
 │ • Full security scan of new/changed code                    │
 │ • Follow: securitychecklist.md                              │
 │ • Check: auth, injection, XSS, CSRF, secrets exposure,      │
 │          input validation, error info leaks, dependencies    │
-│ • WRITES: context.md → "Security Report" section            │
-│ • STATE MANAGER updates session immediately                 │
+│ • Run: yuva session log "Security: [findings]" --type code  │
+│ • Session auto-saves                                        │
 │                                                             │
 │ Issues found?                                               │
 │  ├─ CRITICAL/HIGH ──► Show to user, ASK permission to fix   │
-│  │   User approves ──► DEBUGGER reads "Security Report"     │
-│  │                     ──► fixes ──► STATE MANAGER updates   │
+│  │   User approves ──► DEBUGGER reads session context       │
+│  │                     ──► fixes ──► session auto-saves      │
 │  │                     ──► SECURITY re-scans                 │
-│  │   User declines ──► log as accepted risk in context.md   │
+│  │   User declines ──► yuva session log "Accepted risk: .." │
 │  ├─ MEDIUM ──► Show to user, recommend fixing               │
-│  └─ LOW ──► Log in context.md for refactor phase            │
+│  └─ LOW ──► yuva session log "Low: [issue]" --type issue    │
 │                                                             │
 │ After fixes ──► proceed to STEP 3                           │
 └─────────────────────────────────────────────────────────────┘
@@ -215,68 +215,69 @@ CODE WRITTEN
   ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ STEP 3: REFACTOR AGENT (refactoragent.md)                   │
-│ • READS: context.md → "Security Report" + "Test Results"    │
-│          + "Code Written" (full context from all agents)     │
+│ • Run: yuva session resume (get full pipeline context)      │
 │ • Check SOLID violations                                    │
 │ • Check design pattern opportunities                        │
 │ • Check code duplication                                    │
 │ • Check scalability issues                                  │
 │ • Follow: codestandards.md                                  │
-│ • WRITES: context.md → "Refactor Changes" section           │
-│ • STATE MANAGER updates session immediately                 │
+│ • Run: yuva session log "Refactored: [changes]" --type code │
+│ • Session auto-saves                                        │
 │                                                             │
 │ After refactoring ──► re-run TESTER (verify nothing broke)  │
 │                   ──► re-run SECURITY (verify no new issues) │
-│                   ──► STATE MANAGER updates after each       │
+│                   ──► session auto-saves after each          │
 │                   ──► proceed to STEP 4                     │
 └─────────────────────────────────────────────────────────────┘
   │
   ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ STEP 4: REVIEWER AGENT (revieweragent.md)                   │
-│ • READS: context.md → ALL sections (full pipeline history)  │
+│ • Run: yuva session resume (get full pipeline history)      │
 │ • Final quality gate                                        │
 │ • Run After Code Checklist (aftercode.md)                   │
 │ • Run PR Checklist (prchecklist.md)                         │
 │ • Verify ALL standards were followed                        │
 │ • Verify documentation is complete (documentationstandards) │
-│ • WRITES: context.md → "Review Verdict" section             │
-│ • STATE MANAGER updates session immediately                 │
+│ • Run: yuva session log "Review: [verdict]" --type code     │
+│ • Session auto-saves                                        │
 │                                                             │
 │ CHANGES NEEDED? ──► route back to appropriate agent         │
-│                    (agent reads context.md for full context) │
+│                    (agent runs yuva session resume first)    │
 │ APPROVED? ──► DONE                                          │
 └─────────────────────────────────────────────────────────────┘
   │
   ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ FINAL: STATE MANAGER (statemanageragent.md)                 │
-│ • Final session update — mark pipeline complete             │
-│ • Update .session/state.md → phase: complete                │
-│ • Update .session/next.md → next feature/task               │
+│ • Run: yuva session save "Pipeline complete: [summary]"     │
+│ • Run: yuva session log "Next: [next task]" --type todo     │
+│ • Run: yuva session end (if work is fully done)             │
 │ • Update .memory/ if user context changed                   │
 │                                                             │
 │ ──► DONE. Announce completion to user.                      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### KEY RULE: Session Updates After EVERY Agent
+### KEY RULE: Session Auto-Saves After EVERY Command
 
 ```
 EVERY agent in the pipeline:
-  1. Reads .session/context.md (gets full context from previous agents)
+  1. Runs: yuva session resume (gets full context from previous agents)
   2. Does its work
-  3. Writes its section to .session/context.md
-  4. STATE MANAGER runs immediately:
-     → Updates state.md (current phase, step, health)
-     → Appends to log.md (what just happened)
-     → Updates next.md (what comes next)
+  3. Runs: yuva session log "[what was done]" --type code
+  4. Session AUTO-SAVES after every yuva command:
+     → Updates session.json (structured state)
+     → Updates state.md (current phase, status)
+     → Updates context.md (AI-readable summary)
+     → Updates log.md (timestamped activity)
+     → Captures git state (branch, commits, changed files)
 
 This means:
   ✓ If conversation breaks mid-pipeline, ALL progress is saved
-  ✓ If user returns later, Continuity Agent has full context
+  ✓ If user returns later, `yuva session resume` gives full context
   ✓ No agent ever starts without knowing what previous agents did
-  ✓ Code is recorded in session THE MOMENT it's written
+  ✓ No manual save needed — it's automatic
 ```
 
 ### AGENT INTERCONNECTION MAP
@@ -320,11 +321,12 @@ REVIEWER AGENT (final gate)
   └──► follows: all standards
 
 CONTINUITY AGENT (resume work)
-  ├──► triggered by: returning user with .session/
+  ├──► triggered by: returning user with active session (yuva session status)
+  ├──► runs: yuva session resume → gets full context
   └──► feeds context to: whichever agent is needed next
 
 STATE MANAGER (session persistence)
-  └──► triggered by: after EVERY agent completes any work
+  └──► uses: yuva session log/save/end commands (auto-saves after every yuva command)
 ```
 
 ### CHECKLISTS ENFORCEMENT
@@ -379,7 +381,7 @@ EXECUTION writes code
   ──► SECURITY scans (issues? ──► ask user ──► DEBUGGER fixes ──► SECURITY re-scans)
   ──► REFACTOR improves (──► TESTER verifies ──► SECURITY verifies)
   ──► REVIEWER approves (──► runs aftercode.md + prchecklist.md)
-  ──► STATE MANAGER updates session
+  ──► yuva session save "Pipeline complete"
 ```
 
 ### Handoff Protocol:
@@ -449,38 +451,36 @@ When activating ANY agent:
 
 1. **Announce**: "Activating [AGENT NAME]"
 2. **Read**: The agent's prompt file from `.aiautomations/prompts/`
-3. **Read**: `.session/context.md` — the Agent Context Bus (so agent has full context from previous agents)
+3. **Run**: `yuva session resume` — get full context from previous agents
 4. **Load**: Relevant checklists and standards for that agent
 5. **Follow**: That agent's rules STRICTLY
-6. **After agent completes**: Update `.session/context.md` with agent's output (their section)
-7. **After agent completes**: Run STATE MANAGER to update state.md, log.md, next.md
+6. **After agent completes**: Run `yuva session log "[what agent did]" --type code`
+7. **After agent completes**: Run `yuva session save "[summary]. Next: [what's next]"`
 8. **Do NOT**: Mix responsibilities between agents
 9. **Do NOT**: Skip post-code pipeline agents (Tester → Security → Refactor → Reviewer)
 10. **Do NOT**: Skip checklists — they are mandatory at every stage
-11. **Do NOT**: Skip session updates — State Manager runs after EVERY agent, not just at the end
+11. **Do NOT**: Manually write `.session/` files — always use `yuva session` commands
 
-### The Agent Context Bus (`.session/context.md`)
+### Session as the Agent Context Bus
 
-This file is the **single source of truth** for inter-agent communication. It solves context loss.
+The session system (`yuva session`) is the **single source of truth** for inter-agent communication. It solves context loss.
 
 **How it works:**
 ```
-EXISTING CODE AGENT writes → "Codebase Context" section
-EXECUTION AGENT writes    → "Code Written" section
-TESTER AGENT writes       → "Test Results" section
-SECURITY AGENT writes     → "Security Report" section
-DEBUGGER reads            → "Test Results" + "Security Report" to know what to fix
-REFACTOR AGENT reads      → "Security Report" + "Test Results" to know what to improve
-REFACTOR AGENT writes     → "Refactor Changes" section
-REVIEWER reads            → ALL sections to make final verdict
-REVIEWER writes           → "Review Verdict" section
+EXISTING CODE AGENT → yuva session log "Analyzed: [tech stack, patterns]" --type code
+EXECUTION AGENT     → yuva session log "Code written: [what]" --type code
+TESTER AGENT        → yuva session log "Tests: [pass/fail summary]" --type code
+SECURITY AGENT      → yuva session log "Security: [findings]" --type code
+DEBUGGER            → yuva session resume (reads all above) → fixes
+REFACTOR AGENT      → yuva session resume (reads all above) → improves
+REVIEWER            → yuva session resume (reads full history) → verdict
 ```
 
 **Rules:**
-- Every agent READS context.md before starting
-- Every agent WRITES their section after completing
-- No agent erases another agent's section
-- State Manager updates all session files after each agent
+- Every agent runs `yuva session resume` before starting
+- Every agent runs `yuva session log` after completing
+- Session auto-saves after every yuva command
+- Never manually write `.session/` files — use CLI commands only
 
 ---
 
@@ -502,7 +502,7 @@ REVIEWER writes           → "Review Verdict" section
 - [ ] Update memory if needed
 - [ ] Trigger next agent in pipeline
 - [ ] Run applicable checklist
-- [ ] Update session via State Manager
+- [ ] Session auto-saved (via yuva commands)
 - [ ] Verify task completion
 
 ---
@@ -521,13 +521,16 @@ REVIEWER writes           → "Review Verdict" section
 
 ## START EVERY CONVERSATION BY:
 
-1. Reading user message carefully
-2. Detecting if this is a development task
-3. For dev tasks: scan for existing code → run Existing Code Agent if found
-4. Selecting appropriate agent
-5. Announcing: "Activating [AGENT NAME]"
-6. Loading relevant checklists + standards
-7. Following that agent's rules completely
+1. Run `yuva session status` — check for active session
+2. If active session → run `yuva session resume` → route to Continuity Agent
+3. Reading user message carefully
+4. Detecting if this is a development task
+5. For dev tasks: scan for existing code → run Existing Code Agent if found
+6. If no session → run `yuva session start "user's goal"`
+7. Selecting appropriate agent
+8. Announcing: "Activating [AGENT NAME]"
+9. Loading relevant checklists + standards
+10. Following that agent's rules completely
 
 ---
 
@@ -539,13 +542,13 @@ User: "I want to build a todo app"
 Orchestrator:
   1. Detect: SOFTWARE task
   2. Scan: No code files found
-  3. Check: No .session/, no planning.md
+  3. Check: No active session (yuva session status), no planning.md
   4. Route: REQUIREMENTS AGENT
   5. After requirements: RISK ASSESSMENT → PLANNER
   6. Before coding: ask 6 mandatory questions + run beforecode.md
   7. EXECUTION AGENT writes code
   8. Auto-pipeline: TESTER → SECURITY → REFACTOR → REVIEWER
-  9. STATE MANAGER updates session
+  9. yuva session save "Feature complete" → session auto-saved
 ```
 
 ### Example 2: Existing Project (Code Exists)
@@ -556,8 +559,8 @@ Orchestrator:
   2. Scan: Found package.json, src/ folder → CODE EXISTS
   3. Activate: EXISTING CODE AGENT
      → Analyzes tech stack, architecture, current auth state
-     → Documents codebase context
-  4. Check: .session/ exists? Route accordingly
+     → Logs findings via yuva session log
+  4. Check: yuva session status → route accordingly
   5. Before coding: ask 6 mandatory questions + run beforecode.md
   6. EXECUTION AGENT writes auth code (with codebase context)
   7. Auto-pipeline:
@@ -569,18 +572,18 @@ Orchestrator:
      REFACTOR → improves code (receives security report)
        → TESTER re-runs → SECURITY re-scans
      REVIEWER → runs aftercode.md + prchecklist.md → APPROVED
-  8. STATE MANAGER updates session
+  8. yuva session save "Auth system complete"
 ```
 
 ### Example 3: Returning to Project
 ```
 User: "Continue"
 Orchestrator:
-  1. Found .session/ files
+  1. Run: yuva session status → active session found
   2. Activate: CONTINUITY AGENT
-     → Reads state.md, log.md, next.md
-     → Reconstructs full context
-  3. Route to appropriate agent based on next.md
+     → Runs: yuva session resume → gets full context
+     → Knows exactly where to pick up
+  3. Route to appropriate agent based on session context
   4. Full pipeline runs after any code changes
 ```
 
@@ -597,5 +600,5 @@ Orchestrator:
      SECURITY → scans changed code
      REFACTOR → improves if needed (with security context)
      REVIEWER → final approval
-  6. STATE MANAGER updates session
+  6. yuva session save "Bug fixed and verified"
 ```
