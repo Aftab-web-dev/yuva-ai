@@ -3,6 +3,8 @@
 **[yuvaog.com](https://yuvaog.com/)** | A lightweight development agent framework with **12 specialized agents**, **20 LLM platforms**, on-demand prompts, and auto-detection.
 
 [![npm version](https://img.shields.io/npm/v/yuva-ai.svg)](https://www.npmjs.com/package/yuva-ai)
+[![npm downloads](https://img.shields.io/npm/dt/yuva-ai.svg)](https://www.npmjs.com/package/yuva-ai)
+[![npm downloads/month](https://img.shields.io/npm/dm/yuva-ai.svg)](https://www.npmjs.com/package/yuva-ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://img.shields.io/badge/tests-vitest-green.svg)](https://vitest.dev/)
 
