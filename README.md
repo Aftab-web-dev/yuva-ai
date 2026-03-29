@@ -1,6 +1,6 @@
 # Yuva AI
 
-A lightweight development agent framework with **12 specialized agents**, **19 LLM platforms**, on-demand prompts, and auto-detection.
+**[yuvaog.com](https://yuvaog.com/)** | A lightweight development agent framework with **12 specialized agents**, **20 LLM platforms**, on-demand prompts, and auto-detection.
 
 [![npm version](https://img.shields.io/npm/v/yuva-ai.svg)](https://www.npmjs.com/package/yuva-ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -251,6 +251,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Links
 
+- [Website](https://yuvaog.com/)
 - [NPM Package](https://www.npmjs.com/package/yuva-ai)
 - [GitHub Repository](https://github.com/Aftab-web-dev/yuva-ai)
 - [Report Issues](https://github.com/Aftab-web-dev/yuva-ai/issues)
