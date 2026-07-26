@@ -10,5 +10,6 @@ module.exports = defineConfig({
       include: ['lib/**', 'bin/**'],
     },
     testTimeout: 10000,
+    exclude: ['test-demo/**', 'node_modules/**'],
   }
 });

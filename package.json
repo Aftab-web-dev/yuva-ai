@@ -67,7 +67,7 @@
     "bin/",
     "lib/",
     "template/",
-    "docs/",
+    "index.js",
     "README.md",
     "LICENSE"
   ],
@@ -78,5 +78,10 @@
     "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.39.4",
     "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "execa": "^7.2.0",
+    "glob": "^13.0.6",
+    "picocolors": "^1.1.1"
   }
 }

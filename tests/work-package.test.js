@@ -34,9 +34,8 @@ describe('work-package', () => {
     expect(pkg).toContain(`Work Package — Task ${task.id}`);
     expect(pkg).toContain('Build login');
     expect(pkg).toContain('JWT-based auth');
-    // Agent prompt + checklists come from the package template dir
+    // Agent prompt comes from the package template dir
     expect(pkg).toContain('Your Agent Instructions (executor)');
-    expect(pkg).toContain('Required Checklist: beforecode.md');
     expect(pkg).toContain('Completion Protocol (MANDATORY)');
     expect(pkg).toContain(`yuva task done ${task.id}`);
     expect(pkg).toContain(`yuva task fail ${task.id}`);

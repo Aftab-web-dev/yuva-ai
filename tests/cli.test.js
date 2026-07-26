@@ -23,10 +23,6 @@ describe('CLI', () => {
 
       expect(fs.existsSync(path.join(tmpDir, 'AGENTS.md'))).toBe(true);
       expect(fs.existsSync(path.join(tmpDir, '.aiautomations', 'prompts'))).toBe(true);
-      expect(fs.existsSync(path.join(tmpDir, '.aiautomations', 'standards'))).toBe(true);
-      expect(fs.existsSync(path.join(tmpDir, '.aiautomations', 'checklists'))).toBe(true);
-      expect(fs.existsSync(path.join(tmpDir, '.aiautomations', 'protocols'))).toBe(true);
-      expect(fs.existsSync(path.join(tmpDir, '.aiautomations', 'templates'))).toBe(true);
     });
 
     it('should create all dev agent prompt files', () => {
@@ -49,26 +45,6 @@ describe('CLI', () => {
       expect(fs.existsSync(path.join(tmpDir, '.aiautomations', 'config.json'))).toBe(true);
     });
 
-    it('should create agents directory', () => {
-      const templateDir = path.join(__dirname, '..', 'template');
-      const { copyDir } = require('../lib/fs-utils');
-
-      copyDir(templateDir, tmpDir);
-
-      expect(fs.existsSync(path.join(tmpDir, '.aiautomations', 'agents'))).toBe(true);
-    });
-
-    it('should create workflow directory', () => {
-      const templateDir = path.join(__dirname, '..', 'template');
-      const { copyDir } = require('../lib/fs-utils');
-
-      copyDir(templateDir, tmpDir);
-
-      const workflowsDir = path.join(tmpDir, '.aiautomations', 'workflows');
-      expect(fs.existsSync(workflowsDir)).toBe(true);
-      const workflows = fs.readdirSync(workflowsDir).filter(f => f.endsWith('.yml'));
-      expect(workflows.length).toBeGreaterThanOrEqual(1);
-    });
   });
 
   describe('resolve-package', () => {

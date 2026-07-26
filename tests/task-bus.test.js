@@ -41,7 +41,7 @@ describe('TaskBus', () => {
   describe('addTask()', () => {
     it('creates a pending task with metadata', () => {
       const task = bus.addTask({ title: 'Build login', role: 'executor', description: 'JWT auth' });
-      expect(task.id).toMatch(/^[0-9a-f]{6}$/);
+      expect(task.id).toMatch(/^[0-9a-f]{12}$/);
       expect(task.status).toBe('pending');
       expect(task.role).toBe('executor');
       expect(task.attempts).toBe(0);
@@ -161,7 +161,7 @@ describe('TaskBus', () => {
   describe('workers', () => {
     it('registers, heartbeats, and lists workers', () => {
       const worker = bus.registerWorker({ role: 'tester', mode: 'auto' });
-      expect(worker.id).toMatch(/^w-[0-9a-f]{4}$/);
+      expect(worker.id).toMatch(/^w-[0-9a-f]{8}$/);
 
       const updated = bus.heartbeat(worker.id, { status: 'busy', currentTask: 'abc123' });
       expect(updated.status).toBe('busy');
