@@ -1,6 +1,6 @@
 {
   "name": "yuva-ai",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Yuva AI - Neural-graph development agent framework with enforcement, multi-agent swarm, 20 LLM platforms, and auto-detection",
   "main": "index.js",
   "bin": {
