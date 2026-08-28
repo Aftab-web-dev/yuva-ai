@@ -1,5 +1,5 @@
 
-const { validateAgentName, validateWorkflowName, validateCommand } = require('../lib/validator');
+const { validateAgentName, validateCommand } = require('../lib/validator');
 
 describe('validator', () => {
   describe('validateAgentName', () => {
@@ -25,17 +25,6 @@ describe('validator', () => {
 
     it('should reject names that are too long', () => {
       expect(validateAgentName('a'.repeat(51)).valid).toBe(false);
-    });
-  });
-
-  describe('validateWorkflowName', () => {
-    it('should accept valid names', () => {
-      expect(validateWorkflowName('my-workflow').valid).toBe(true);
-    });
-
-    it('should reject invalid names', () => {
-      expect(validateWorkflowName('').valid).toBe(false);
-      expect(validateWorkflowName('My Workflow').valid).toBe(false);
     });
   });
 

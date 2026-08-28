@@ -73,12 +73,6 @@ function showHelp() {
   log('  add create <name> Create a custom agent');
   log('  add remove <name> Remove an agent\n');
 
-  log('Workflow Commands:', 'bright');
-  log('  workflow list     List all workflows');
-  log('  workflow create   Create a new workflow');
-  log('  workflow show     Show workflow details');
-  log('  workflow delete   Delete a workflow\n');
-
   log('Configuration:', 'bright');
   log('  config            Show/edit configuration');
   log('  config set <k> <v>  Set a config value');
@@ -206,11 +200,6 @@ switch (command) {
     addCommand(subArgs);
     break;
   }
-  case 'workflow': {
-    const workflowCommand = require('../lib/commands/workflow');
-    workflowCommand(subArgs);
-    break;
-  }
   case 'llm': {
     const llmCommand = require('../lib/commands/llm');
     llmCommand(subArgs);
@@ -254,6 +243,11 @@ switch (command) {
   case 'loop': {
     const loopCommand = require('../lib/commands/loop');
     loopCommand(rawSubArgs());
+    break;
+  }
+  case 'hook': {
+    const hookCommand = require('../lib/commands/hook');
+    hookCommand(subArgs);
     break;
   }
   case 'scan': {
